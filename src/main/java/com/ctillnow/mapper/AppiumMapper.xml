@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctillnow.mapper.AppiumMapper">
+    <resultMap id="BaseResultMap" type="com.ctillnow.bean.Appium">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="port" jdbcType="SMALLINT" property="port"/>
+        <result column="atui_thread_status" javaType="AtuiThreadStatus" property="atuiThreadStatus"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_run_time" jdbcType="TIMESTAMP" property="lastRunTime"/>
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, port, atui_thread_status, is_deleted, create_time, last_run_time, last_update_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_appium
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        DELETE FROM t_appium
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id"
+            parameterType="com.qingqing.wxatui.domain.Appium">
+        INSERT INTO t_appium (id, port, atui_thread_status,
+                              is_deleted, create_time, last_run_time,
+                              last_update_time)
+        VALUES (#{id,jdbcType=INTEGER}, #{port,jdbcType=SMALLINT}, #{atuiThreadStatus,jdbcType=TINYINT},
+                #{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{lastRunTime,jdbcType=TIMESTAMP},
+                #{lastUpdateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.qingqing.wxatui.domain.Appium">
+        insert into t_appium
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="port != null">
+                port,
+            </if>
+            <if test="atuiThreadStatus != null">
+                atui_thread_status,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="lastRunTime != null">
+                last_run_time,
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="port != null">
+                #{port,jdbcType=SMALLINT},
+            </if>
+            <if test="atuiThreadStatus != null">
+                #{atuiThreadStatus,jdbcType=TINYINT},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastRunTime != null">
+                #{lastRunTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateTime != null">
+                #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.qingqing.wxatui.domain.Appium">
+        update t_appium
+        <set>
+            <if test="port != null">
+                port = #{port,jdbcType=SMALLINT},
+            </if>
+            <if test="atuiThreadStatus != null">
+                atui_thread_status = #{atuiThreadStatus,jdbcType=TINYINT},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastRunTime != null">
+                last_run_time = #{lastRunTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.qingqing.wxatui.domain.Appium">
+        UPDATE t_appium
+        SET port               = #{port,jdbcType=SMALLINT},
+            atui_thread_status = #{atuiThreadStatus,jdbcType=TINYINT},
+            is_deleted         = #{isDeleted,jdbcType=TINYINT},
+            create_time        = #{createTime,jdbcType=TIMESTAMP},
+            last_run_time      = #{lastRunTime,jdbcType=TIMESTAMP},
+            last_update_time   = #{lastUpdateTime,jdbcType=TIMESTAMP}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="maxPort" resultType="java.lang.Integer">
+        SELECT max(port)
+        FROM t_appium
+    </select>
+
+    <update id="updateStatus">
+        UPDATE t_appium
+        SET atui_thread_status = #{atuiThreadStatus,javaType=AtuiThreadStatus}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateStatusAndLastRunTime">
+        UPDATE t_appium
+        SET atui_thread_status = #{atuiThreadStatus,javaType=AtuiThreadStatus},
+            last_run_time   = #{date,jdbcType=TIMESTAMP}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+</mapper>

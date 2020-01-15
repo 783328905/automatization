@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctillnow.mapper.MobileDeviceMapper">
+    <resultMap id="BaseResultMap" type="com.ctillnow.bean.MobileDevice">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="udid" jdbcType="VARCHAR" property="udid"/>
+        <result column="device_status" javaType="DeviceStatus" property="deviceStatus"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_online_time" jdbcType="TIMESTAMP" property="lastOnlineTime"/>
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, udid, device_status, is_deleted, create_time, last_online_time, last_update_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mobile_device
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        DELETE FROM t_mobile_device
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.ctillnow.bean.MobileDevice">
+        INSERT INTO t_mobile_device (id, udid, device_status,
+                                     is_deleted, create_time, last_online_time,
+                                     last_update_time)
+        VALUES (#{id,jdbcType=INTEGER}, #{udid,jdbcType=VARCHAR}, #{deviceStatus,javaType=DeviceStatus},
+                #{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{lastOnlineTime,jdbcType=TIMESTAMP},
+                #{lastUpdateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ctillnow.bean.MobileDevice">
+        insert into t_mobile_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="udid != null">
+                udid,
+            </if>
+            <if test="deviceStatus != null">
+                device_status,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="lastOnlineTime != null">
+                last_online_time,
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="udid != null">
+                #{udid,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceStatus != null">
+                #{deviceStatus,jdbcType=TINYINT},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastOnlineTime != null">
+                #{lastOnlineTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateTime != null">
+                #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ctillnow.bean.MobileDevice">
+        update t_mobile_device
+        <set>
+            <if test="udid != null">
+                udid = #{udid,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceStatus != null">
+                device_status = #{deviceStatus,jdbcType=TINYINT},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastOnlineTime != null">
+                last_online_time = #{lastOnlineTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ctillnow.bean.MobileDevice">
+        UPDATE t_mobile_device
+        SET udid             = #{udid,jdbcType=VARCHAR},
+            device_status    = #{deviceStatus,jdbcType=TINYINT},
+            is_deleted       = #{isDeleted,jdbcType=TINYINT},
+            create_time      = #{createTime,jdbcType=TIMESTAMP},
+            last_online_time = #{lastOnlineTime,jdbcType=TIMESTAMP},
+            last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="findByStatus" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mobile_device
+        where device_status = #{deviceStatus,javaType=DeviceStatus}
+        AND is_deleted=0
+    </select>
+
+    <select id="findByUdid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mobile_device
+        where udid = #{udid,jdbcType=VARCHAR}
+        AND is_deleted=0
+    </select>
+
+    <update id="updateAfterCheck" parameterType="com.ctillnow.bean.MobileDevice">
+        UPDATE t_mobile_device
+        SET device_status = #{deviceStatus,javaType=DeviceStatus},
+            last_online_time = #{date,jdbcType=TIMESTAMP}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateStatus" parameterType="com.ctillnow.bean.MobileDevice">
+        UPDATE t_mobile_device
+        SET device_status = #{deviceStatus,javaType=DeviceStatus}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+</mapper>

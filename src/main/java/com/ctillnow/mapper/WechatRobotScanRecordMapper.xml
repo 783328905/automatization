@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctillnow.mapper.WechatRobotScanRecordMapper">
+  <resultMap id="BaseResultMap" type="com.ctillnow.bean.WechatRobotScanRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="robot_account_id" jdbcType="INTEGER" property="robotAccountId" />
+    <result column="start_scan_time" jdbcType="TIMESTAMP" property="startScanTime" />
+    <result column="end_scan_time" jdbcType="TIMESTAMP" property="endScanTime" />
+    <result column="scan_result_type" javaType="ScanResultType" property="scanResultType" />
+    <result column="scan_ref_id" jdbcType="VARCHAR" property="scanRefId" />
+    <result column="qrcode_source" jdbcType="VARCHAR" property="qrcodeSource" />
+    <result column="scan_day" jdbcType="DATE" property="scanDay" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="wechat_group_name" jdbcType="VARCHAR" property="wechatGroupName" />
+    <result column="group_people_num" jdbcType="INTEGER" property="groupPeopleNum" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, robot_account_id, start_scan_time, end_scan_time, scan_result_type, scan_ref_id, 
+    qrcode_source, scan_day, create_time, last_update_time, wechat_group_name, group_people_num
+  </sql>
+
+  <insert id="insert" parameterType="com.ctillnow.bean.WechatRobotScanRecord">
+    insert into t_wechat_robot_scan_record (id, robot_account_id, start_scan_time, 
+      end_scan_time, scan_result_type, scan_ref_id, 
+      qrcode_source, scan_day, create_time, 
+      last_update_time, wechat_group_name, group_people_num)
+    values (#{id,jdbcType=INTEGER}, #{robotAccountId,jdbcType=INTEGER}, #{startScanTime,jdbcType=TIMESTAMP}, 
+      #{endScanTime,jdbcType=TIMESTAMP}, #{scanResultType,javaType=ScanResultType}, #{scanRefId,jdbcType=VARCHAR},
+      #{qrcodeSource,jdbcType=VARCHAR}, #{scanDay,jdbcType=DATE}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{wechatGroupName,jdbcType=VARCHAR},  #{groupPeopleNum,jdbcType=INTEGER})
+  </insert>
+
+  <select id="findByRobotAccountIdAndScanDayAndScanResultType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_wechat_robot_scan_record
+    where  robot_account_id = #{robotAccountId,jdbcType=INTEGER}
+    AND  scan_day = #{scanDay,jdbcType=DATE}
+    AND scan_result_type = #{scanResultType,javaType=ScanResultType}
+  </select>
+
+  <select id="findByScanRefId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_wechat_robot_scan_record
+    where  scan_ref_id = #{scanRefId,jdbcType=VARCHAR} and to_days(create_time) = to_days(now())
+    LIMIT 1
+  </select>
+
+
+</mapper>

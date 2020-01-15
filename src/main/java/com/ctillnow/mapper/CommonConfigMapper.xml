@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctillnow.mapper.CommonConfigMapper">
+
+  <resultMap id="BaseResultMap" type="com.ctillnow.bean.CommonConfig">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="config_key" jdbcType="VARCHAR" property="configKey" />
+    <result column="config_remark" jdbcType="VARCHAR" property="configRemark" />
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+  </resultMap>
+
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.ctillnow.bean.CommonConfig">
+    <result column="config_value" jdbcType="LONGVARCHAR" property="configValue" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, config_key, config_remark, is_deleted, create_time, last_update_time
+  </sql>
+
+  <sql id="Blob_Column_List">
+    config_value
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_common_config
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="findByConfigKey" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_common_config
+    where config_key = #{configKey,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

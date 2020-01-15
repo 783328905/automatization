@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctillnow.mapper.RobotTaskMapper">
+  <resultMap id="BaseResultMap" type="com.ctillnow.bean.RobotTask">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="ref_id" jdbcType="BIGINT" property="refId" />
+    <result column="task_status" javaType="TaskStatus" property="taskStatus" />
+    <result column="error_msg" jdbcType="VARCHAR" property="errorMsg" />
+    <result column="error_code" jdbcType="SMALLINT" property="errorCode" />
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.ctillnow.bean.RobotTask">
+    <result column="task_content" jdbcType="LONGVARCHAR" property="taskContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, ref_id, task_status, error_msg, error_code, is_deleted, create_time, last_update_time
+  </sql>
+  <sql id="Blob_Column_List">
+    task_content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_robot_task
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+          parameterType="com.ctillnow.bean.RobotTask">
+    insert into t_robot_task (id, ref_id, task_status,
+      error_msg, error_code, is_deleted, 
+      create_time, last_update_time, task_content
+      )
+    values (#{id,jdbcType=BIGINT}, #{refId,jdbcType=BIGINT}, #{taskStatus,javaType=TaskStatus},
+      #{errorMsg,jdbcType=VARCHAR}, #{errorCode,jdbcType=SMALLINT}, #{isDeleted,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{taskContent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateTaskInfo">
+  UPDATE t_robot_task SET task_status=#{taskStatus,javaType=TaskStatus},
+  error_msg=#{errorMsg},error_code=#{errorCode} WHERE id=#{id}
+  </update>
+
+  <update id="updateTaskStatus">
+    UPDATE t_robot_task SET task_status=#{taskStatus,javaType=TaskStatus} WHERE id=#{id}
+  </update>
+</mapper>

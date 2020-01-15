@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctillnow.mapper.WechatRobotUserMapper">
+    <resultMap id="BaseResultMap" type="com.ctillnow.bean.WechatRobotUser">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="alias_id" jdbcType="VARCHAR" property="aliasId"/>
+        <result column="account_status" javaType="AccountStatus" property="accountStatus"/>
+        <result column="wechat_nick" jdbcType="VARCHAR" property="wechatNick"/>
+        <result column="wechat_folder_name" jdbcType="VARCHAR" property="wechatFolderName"/>
+        <result column="device_id" jdbcType="INTEGER" property="deviceId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, alias_id, account_status, wechat_nick, wechat_folder_name, device_id, user_id,
+        is_deleted, create_time, last_update_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_wechat_robot_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        DELETE FROM t_wechat_robot_user
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.ctillnow.bean.WechatRobotUser">
+        INSERT INTO t_wechat_robot_user (id, alias_id, account_status,
+                                         wechat_nick, wechat_folder_name, device_id,
+                                         user_id, is_deleted, create_time,
+                                         last_update_time)
+        VALUES (#{id,jdbcType=INTEGER}, #{aliasId,jdbcType=VARCHAR}, #{accountStatus,javaType=AccountStatus},
+                #{wechatNick,jdbcType=VARCHAR}, #{wechatFolderName,jdbcType=VARCHAR}, #{deviceId,jdbcType=INTEGER},
+                #{userId,jdbcType=BIGINT}, #{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP},
+                #{lastUpdateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ctillnow.bean.WechatRobotUser">
+        insert into t_wechat_robot_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="aliasId != null">
+                alias_id,
+            </if>
+            <if test="accountStatus != null">
+                account_status,
+            </if>
+            <if test="wechatNick != null">
+                wechat_nick,
+            </if>
+            <if test="wechatFolderName != null">
+                wechat_folder_name,
+            </if>
+            <if test="deviceId != null">
+                device_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="aliasId != null">
+                #{aliasId,jdbcType=VARCHAR},
+            </if>
+            <if test="accountStatus != null">
+                #{accountStatus,jdbcType=TINYINT},
+            </if>
+            <if test="wechatNick != null">
+                #{wechatNick,jdbcType=VARCHAR},
+            </if>
+            <if test="wechatFolderName != null">
+                #{wechatFolderName,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceId != null">
+                #{deviceId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateTime != null">
+                #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ctillnow.bean.WechatRobotUser">
+        update t_wechat_robot_user
+        <set>
+            <if test="aliasId != null">
+                alias_id = #{aliasId,jdbcType=VARCHAR},
+            </if>
+            <if test="accountStatus != null">
+                account_status = #{accountStatus,jdbcType=TINYINT},
+            </if>
+            <if test="wechatNick != null">
+                wechat_nick = #{wechatNick,jdbcType=VARCHAR},
+            </if>
+            <if test="wechatFolderName != null">
+                wechat_folder_name = #{wechatFolderName,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceId != null">
+                device_id = #{deviceId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ctillnow.bean.WechatRobotUser">
+        UPDATE t_wechat_robot_user
+        SET alias_id           = #{aliasId,jdbcType=VARCHAR},
+            account_status     = #{accountStatus,jdbcType=TINYINT},
+            wechat_nick        = #{wechatNick,jdbcType=VARCHAR},
+            wechat_folder_name = #{wechatFolderName,jdbcType=VARCHAR},
+            device_id          = #{deviceId,jdbcType=INTEGER},
+            user_id            = #{userId,jdbcType=BIGINT},
+            is_deleted         = #{isDeleted,jdbcType=TINYINT},
+            create_time        = #{createTime,jdbcType=TIMESTAMP},
+            last_update_time   = #{lastUpdateTime,jdbcType=TIMESTAMP}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="findByAliasId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_wechat_robot_user
+        WHERE alias_id = #{aliasId,jdbcType=VARCHAR}
+        AND is_deleted=0
+    </select>
+
+    <update id="updateStatus">
+        UPDATE t_wechat_robot_user
+        SET account_status = #{accountStatus,jdbcType=TINYINT}
+        WHERE
+            device_id = #{deviceId,jdbcType=INTEGER}
+            AND
+            wechat_folder_name = #{wechatFolderName,jdbcType=VARCHAR}
+    </update>
+
+    <select id="findByDeviceIdAndFolderName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_wechat_robot_user
+        WHERE device_id = #{deviceId,jdbcType=INTEGER}
+        AND wechat_folder_name = #{wechatFolderName,jdbcType=VARCHAR}
+        AND is_deleted=0
+    </select>
+
+    <update id="removeDevice">
+        UPDATE t_wechat_robot_user
+        SET device_id = NULL
+        WHERE
+            id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="findByDeviceId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_wechat_robot_user
+        WHERE device_id = #{deviceId,jdbcType=INTEGER}
+        AND is_deleted=0
+    </select>
+
+    <select id="findByUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_wechat_robot_user
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+        AND is_deleted=0
+    </select>
+
+    <select id="findByWechatNick" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_wechat_robot_user
+        WHERE wechat_nick = #{wechatNick,jdbcType=VARCHAR}
+        AND is_deleted=0
+        LIMIT 1
+    </select>
+
+</mapper>

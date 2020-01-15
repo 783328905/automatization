@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctillnow.mapper.GroupMsgMapper">
+
+    <resultMap id="BaseResultMap" type="com.ctillnow.bean.task.GroupMessageBean">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="group_name" jdbcType="VARCHAR" property="groupName" />
+        <result column="task_id" jdbcType="BIGINT" property="taskId" />
+        <result column="qrcode_id" jdbcType="BIGINT" property="qrcodeId" />
+        <result column="text_msg" jdbcType="VARCHAR" property="textMsg" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="text_top" jdbcType="TINYINT" property="textTop" />
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+        <result column="is_at_all" jdbcType="TINYINT" property="isAtAll" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+        <result column="send_msg_time" jdbcType="VARCHAR" property="sendMsgTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, group_name, qrcode_id, text_top, task_id, text_msg, send_msg_time, is_at_all, url, is_deleted, create_time, last_update_time
+    </sql>
+
+    <insert id="save" parameterType="com.ctillnow.bean.task.GroupMessageBean" useGeneratedKeys="true" keyProperty="id">
+        insert into t_group_msg_config( group_name, qrcode_id,task_id, text_msg, text_top, send_msg_time, is_at_all, url, is_deleted, create_time, last_update_time)
+          VALUES (
+          #{groupName,jdbcType=VARCHAR},
+          #{qrcodeId,jdbcType=BIGINT},
+          #{taskId,jdbcType=BIGINT},
+          #{textMsg,jdbcType=VARCHAR},
+          #{textTop,jdbcType=TINYINT},
+          #{sendMsgTime,jdbcType=VARCHAR},
+          #{isAtAll,jdbcType=TINYINT},
+          #{url,jdbcType=VARCHAR},
+          #{isDeleted,jdbcType=TINYINT},
+          #{createTime,jdbcType=TIMESTAMP},
+          #{lastUpdateTime,jdbcType=TIMESTAMP}
+          )
+
+
+    </insert>
+    <select id="findGroup" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_group_msg_config
+        where group_name = #{groupName,jdbcType=VARCHAR}
+    </select>
+</mapper>
